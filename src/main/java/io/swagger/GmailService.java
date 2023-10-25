@@ -145,7 +145,7 @@ public class GmailService {
                                     .get(user, emailMessage.getId(), attachmentId)
                                     .execute();
                             String base64Content = attachmentPart.getData();
-                            System.out.println(base64Content);
+
                             if (base64Content != null) {
                                 byte[] contentBytes = Base64.getUrlDecoder().decode(base64Content);
                                 // Extract text from the PDF attachment

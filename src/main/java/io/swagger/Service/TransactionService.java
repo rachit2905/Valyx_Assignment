@@ -80,14 +80,36 @@ public class TransactionService {
     }
 
     public void printTransactionTable(List<Transaction> transactions) {
-        System.out.printf("%-15s %-15s %-30s %-10s %-10s%n", "Transaction ID", "Date", "Description", "Type", "Amount");
+        // Determine the maximum widths for each column
+        int idWidth = 20;
+        int dateWidth = 30;
+        int descriptionWidth = 20;
+        int typeWidth = 20;
+        int amountWidth = 20;
+
         for (Transaction transaction : transactions) {
-            System.out.printf("%-15s %-15s %-30s %-10s %-10s%n",
+            descriptionWidth = Math.max(descriptionWidth, transaction.getDescription().length());
+            typeWidth = Math.max(typeWidth, transaction.getType().length());
+            // Assuming 'Amount' is a double, convert it to a formatted string and calculate
+            // its width
+            String amountString = String.format("$%,-10.2f", transaction.getAmount());
+            amountWidth = Math.max(amountWidth, amountString.length());
+        }
+
+        // Use the determined column widths for formatting
+        String format = String.format("%%-%ds %%-%ds %%-%ds %%-%ds %%-%ds%%n",
+                idWidth, dateWidth, descriptionWidth, typeWidth, amountWidth);
+
+        System.out.printf(format, "Transaction ID", "Date", "Description", "Type", "Amount");
+
+        for (Transaction transaction : transactions) {
+            System.out.printf(format,
                     transaction.getId(),
                     transaction.getDate(),
                     transaction.getDescription(),
                     transaction.getType(),
-                    transaction.getAmount());
+                    String.format("$%,-10.2f", transaction.getAmount()));
         }
     }
+
 }
